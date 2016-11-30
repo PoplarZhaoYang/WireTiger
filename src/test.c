@@ -1,3 +1,8 @@
+/*
+ * just a test program to test wheather the libpcap is installed successfully.
+ */
+
+
 #include <pcap.h>
 #include <stdio.h>
 
