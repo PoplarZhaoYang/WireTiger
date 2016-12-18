@@ -7,12 +7,14 @@
 - 3 ./wiretiger 
 
 ## specification
-wiretiger [-d device] [-r file] [-s expression]
+wiretiger [-d device] [-f file] [-e expression]
 
-> -i  Listen on network device (e.g., en0). If not specified, wiretiger 
+> -d  Listen on network device (e.g., en0). If not specified, wiretiger 
     should select a default device to listen on. 
-> -r  Read packets from <file> (tcpdump format). 
-> -s  Keep only packets that contain <string> in their payload.
+
+> -f  Read packets from <file> (tcpdump format). 
+
+> -e  Keep only packets that contain <string> in their payload.
 
 
 
