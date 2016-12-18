@@ -10,9 +10,9 @@ int main()
 {
     char errBuf[PCAP_ERRBUF_SIZE], *device;
     device = pcap_lookupdev(errBuf);
-    if (device) 
-        printf("Success: device: %s\n", device);
-    else 
-        printf("error: %s\n", errBuf);
+    char dev[] = "en0";
+    bpf_u_int32 mask, net;
+    pcap_lookupnet(dev, &net, &mask, errBuf);
+    printf("dev: %s %d %d %s\n", dev, net, mask, errBuf);
     return 0;
 }
