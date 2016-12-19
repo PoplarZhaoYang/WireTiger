@@ -4,7 +4,8 @@
 ## how to build
 - 1 make clean
 - 2 make
-- 3 ./wiretiger 
+- 3 sudo chmod 777 /dev/bpf*(for mac user, to get power of device)
+- 4 ./wiretiger 
 
 ## specification
 wiretiger [-d device] [-f file] [-e expression]
