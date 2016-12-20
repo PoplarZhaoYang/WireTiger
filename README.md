@@ -2,10 +2,10 @@
 ## A network monitoring application written in C using libpcap library.
 
 ## how to build
-- 1 make clean
-- 2 make
-- 3 sudo chmod 777 /dev/bpf*(for mac user, to get the power of device)
-- 4 ./wiretiger 
+> - 1 make clean
+> - 2 make
+> - 3 sudo chmod 777 /dev/bpf*(for mac user, to get the power of device)
+> - 4 ./wiretiger 
 
 ## specification
 wiretiger [-d device] [-f file] [-e expression]
