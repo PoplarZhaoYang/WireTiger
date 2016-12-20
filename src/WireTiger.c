@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
         BPFExpression = argv[counter];
 
 #ifdef LOG
+    puts("Run successfully!");
     printf ("Log::d_choosed = %d, interface = %s, f_choosed = %d, fileName = %s\n",d_choosed, interface, f_choosed, fileName);
     printf ("Log::e_choosed = %d, string = %s, Filter expression = %s\n", e_choosed, string, BPFExpression);
 #endif
@@ -173,7 +174,6 @@ void print_hex_ascii_line(const u_char *payload, int len, int offset) {
         }
     }
     printf("   ");
-    
     ch = payload;
     for(i = 0; i < len; i++) {
         if (isprint(*ch))
@@ -182,25 +182,21 @@ void print_hex_ascii_line(const u_char *payload, int len, int offset) {
             printf(".");
         ch++;
     }
-
     printf("\n");
-
     return;
 }
 
 
 void print_payload(const u_char *payload, int len) {
-
     int len_rem = len;
-    int line_width = 16;            /* number of bytes per line */
+    int line_width = 16;            
     int line_len;
-    int offset = 0;                 /* zero-based offset counter */
+    int offset = 0;                
     const u_char *ch = payload;
 
     if (len <= 0)
         return;
 
-    /* data fits on one line */
     if (len <= line_width) {
         print_hex_ascii_line(ch, len, offset);
         return;
@@ -217,7 +213,6 @@ void print_payload(const u_char *payload, int len) {
             break;
         }
     }
-
     return;
 }
 
@@ -248,14 +243,10 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
             }
             payload = (char *)(packet + SIZE_ETHERNET + size_ip + size_tcp);
             size_payload = ntohs(ip->ip_len) - (size_ip + size_tcp);
-
-
             if ((string == NULL) || 
                 ((string != NULL) && (size_payload > 0) && (strstr(payload, string) != NULL))) {
                 printf("\nTime:%s \n", timestamp_string(header->ts));
-
                 printf("Mac road:  ");
-                
                 printf("%02X:%02X:%02X:%02X:%02X:%02X",
                 (unsigned)ethernet->ether_shost[0],
                 (unsigned)ethernet->ether_shost[1],
@@ -263,7 +254,6 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
                 (unsigned)ethernet->ether_shost[3],
                 (unsigned)ethernet->ether_shost[4],
                 (unsigned)ethernet->ether_shost[5]);
-
                 printf(" -> ");
                 printf("%02X:%02X:%02X:%02X:%02X:%02X ",
                 (unsigned)ethernet->ether_dhost[0],
@@ -274,24 +264,21 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
                 (unsigned)ethernet->ether_dhost[5]);
 
                 printf("\ntype 0x%04x\n ", ntohs(ethernet->ether_type));
-                printf(" len %d\n", header->len);
-                printf("%s:%d -> %s:%d\n", inet_ntoa(ip->ip_src), ntohs(tcp->th_sport), 
+                printf("len %d\n", header->len);
+                printf("ip road: %s:%d -> %s:%d\n", inet_ntoa(ip->ip_src), ntohs(tcp->th_sport), 
                         inet_ntoa(ip->ip_dst), ntohs(tcp->th_dport));
+                puts("");
+                print_payload((u_char*)payload, size_payload);
                 printf("TCP \n");
-
             }
-
             break;
         case IPPROTO_UDP:
-
             break;
 
         default:
             // COMMON
             printf("\nTime:%s \n", timestamp_string(header->ts));
-
             printf("Mac road:  ");
-
             printf("%02X:%02X:%02X:%02X:%02X:%02X",
                     (unsigned)ethernet->ether_shost[0],
                     (unsigned)ethernet->ether_shost[1],
@@ -309,17 +296,13 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
                     (unsigned)ethernet->ether_dhost[4],
                     (unsigned)ethernet->ether_dhost[5]);
 
-            printf("\ntype 0x%04x\n ", ntohs(ethernet->ether_type));
-            printf(" len %d\n", header->len);
-            // END COMMON
-            // TCP - RELATED
-
-            /* print source and destination IP addresses */
-            printf("%s -> %s ", inet_ntoa(ip->ip_src), inet_ntoa(ip->ip_dst));
+            printf("\ntype 0x%04x\n", ntohs(ethernet->ether_type));
+            printf("len %d\n", header->len);
+            printf("ip road: %s -> %s ", inet_ntoa(ip->ip_src), inet_ntoa(ip->ip_dst));
+            puts("");
+            print_payload((u_char*)payload, 128);
             printf("OTHER \n");
-
             break;
     }
-
     return;
 }
